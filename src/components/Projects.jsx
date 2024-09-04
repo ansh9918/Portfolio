@@ -8,6 +8,8 @@ import PropTypes from "prop-types";
 ProjectCard.propTypes = {
     title: PropTypes.string.isRequired, // title must be a string and is required
     description: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    giturl: PropTypes.string.isRequired,
      // description must be a string and is required
 };
 
@@ -59,6 +61,8 @@ const Projects = () => {
                         <ProjectCard
                             title="My Portfolio"
                             description="A web application about me made with React, Tailwind CSS, Framer Motion, etc."
+                            url="https://anshportfolio-swart.vercel.app/"
+                            giturl="https://github.com/ansh9918/Portfolio"
                         />
                     </motion.div>
                 </motion.section>
@@ -66,7 +70,7 @@ const Projects = () => {
   )
 }
 
-function ProjectCard({ title, description }) {
+function ProjectCard({ title, description, giturl, url}) {
     return (
         <Card className="flex flex-col overflow-hidden border border-cyan-100 rounded-2xl p-4 hover:shadow-lg hover:shadow-cyan-400 transition-shadow duration-200 w-full max-w-sm md:max-w-sm lg:max-w-sm">
             {/* Card Content */}
@@ -89,13 +93,13 @@ function ProjectCard({ title, description }) {
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 w-full justify-center items-center">
                     <a
-                        href=""
+                        href={url}
                         target="_blank"
                         className="w-full sm:w-auto h-10 inline-flex items-center justify-center rounded-xl bg-primary px-6 text-sm md:text-md font-medium text-white shadow transition-transform duration-150 hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring hover:scale-105">
                         View Project
                     </a>
                     <a
-                        href=""
+                        href={giturl}
                         target="_blank"
                         className="w-full sm:w-auto h-10 inline-flex items-center justify-center rounded-xl bg-secondary px-6 text-sm md:text-md font-medium text-white shadow transition-transform duration-150 hover:bg-secondary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring hover:scale-105">
                         View Code
