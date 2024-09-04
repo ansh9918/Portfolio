@@ -8,7 +8,7 @@ import { FaAward, FaFile } from "react-icons/fa";
 import { FaBuildingNgo } from "react-icons/fa6";
 import { GrCertificate } from "react-icons/gr";
 import { MdPeopleAlt } from "react-icons/md";
-import ResumeDoc from "../assets/Ansh_Resume.pdf";
+import ResumeDoc from "../assets/Ansh Resume.pdf";
 
 const About = () => {
     const aboutControls = useAnimation();
