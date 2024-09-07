@@ -89,8 +89,9 @@ const About = () => {
                                                 1Stop.ai | Aug 2023 - Nov 2023{" "}
                                                 <a
                                                     href="https://drive.google.com/file/d/1FblLKf7m0NJn_fcL2EPguIPeVehT4eoi/view?usp=sharing"
-                                                    target="_blank"></a>{" "}
-                                                <FaFile className="cursor-pointer hover:scale-125 duration-75 w-3 h-3" />
+                                                    target="_blank">
+                                                    <FaFile className="cursor-pointer hover:scale-125 duration-75 w-3 h-3" /></a>
+                                                
                                             </li>
                                             <li className="flex items-center justify-center gap-2">
                                                 Internshala | May 2022 - July
