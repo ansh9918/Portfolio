@@ -2,15 +2,6 @@ import { useMemo } from "react";
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 
-// Helper function to generate a random color
-const getRandomColor = () => {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
 
 const MarqueeItem = ({ texts, from, to }) => {
   // Memoize text elements to prevent unnecessary re-renders
@@ -18,8 +9,7 @@ const MarqueeItem = ({ texts, from, to }) => {
     () =>
       texts.map((text, index) => (
         <span
-          className="text-2xl font-bold px-4 transition duration-300 ease-in-out transform hover:scale-125 md:hover:scale-150 hover:shadow-cyan-600"
-          style={{ color: getRandomColor() }}
+          className="text-3xl font-bold px-4 transition text-[#CCFFFF] duration-300 ease-in-out transform hover:scale-125 hover:shadow-cyan-600"
           key={index}
         >
           {text}

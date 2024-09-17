@@ -16,7 +16,7 @@ const Header = () => {
     };
   return (
     <div>
-      <motion.header variants={fadeUpVariants} className="fixed top-0 left-0 right-0 backdrop-blur-lg py-6 px-4 md:px-10 flex items-center justify-between border-b border-muted">
+      <motion.header variants={fadeUpVariants} className="fixed z-10 top-0 left-0 right-0 backdrop-blur-lg py-6 px-4 md:px-10 flex items-center justify-between border-b border-muted">
                 <a
                     href=""
                     className="flex items-center gap-4 text-xl font-bold">

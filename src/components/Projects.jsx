@@ -72,7 +72,7 @@ const Projects = () => {
 
 function ProjectCard({ title, description, giturl, url}) {
     return (
-        <Card className="flex flex-col overflow-hidden border border-cyan-100 rounded-2xl p-4 hover:shadow-lg hover:shadow-cyan-400 transition-shadow duration-200 w-full max-w-sm md:max-w-sm lg:max-w-sm">
+        <Card className="flex flex-col overflow-hidden border border-cyan-100 rounded-2xl p-4 hover:shadow-xl hover:shadow-cyan-700 transition-shadow duration-200 w-full max-w-sm md:max-w-sm lg:max-w-sm">
             {/* Card Content */}
             <CardContent className="p-0 flex-grow">
                 <div className="w-full h-48 bg-gradient-to-r from-blue-500 to-teal-500"></div>
