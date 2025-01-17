@@ -1,7 +1,7 @@
-import { motion, useAnimation} from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import fadeUpVariants from "../UI/Animations"
+import fadeUpVariants from "../UI/Animations";
 import { Card, CardFooter, CardContent } from "../UI/Card";
 import PropTypes from "prop-types";
 
@@ -10,72 +10,78 @@ ProjectCard.propTypes = {
     description: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     giturl: PropTypes.string.isRequired,
-     // description must be a string and is required
+    imgUrl: PropTypes.string.isRequired,
+    // description must be a string and is required
 };
-
 
 const Projects = () => {
     const projectControls = useAnimation();
-    
 
     // Observe when sections come into view
-    
+
     const { ref: projectRef, inView: projectInView } = useInView({
         threshold: 0.2,
     });
     useEffect(() => {
-        
         if (projectInView) {
             projectControls.start({ opacity: 1, y: 0 });
         }
-        
     }, [projectInView, projectControls]);
-  return (
-    <div>
-      <motion.section
-                    ref={projectRef}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={projectControls}
-                    transition={{ duration: 0.8 }}
-                    variants={fadeUpVariants}
-                    
-                    id="projects"
-                    className="container mx-auto px-4 md:px-6 py-12">
-                    {/* Header */}
-                    <div className="space-y-4 text-center">
-                        <h2 className="text-3xl md:text-4xl font-bold">
-                            My Projects
-                        </h2>
-                        <p className="text-muted-foreground">
-                            Check out some of the projects I&apos;ve worked on.
-                        </p>
-                    </div>
-
-                    {/* Projects Grid */}
-                    <motion.div className="mt-8 flex flex-col gap-8 md:gap-10 lg:gap-12 py-8 md:flex-row flex-wrap justify-center items-center">
-                        <ProjectCard
-                            title="OneClickProjects"
-                            description="In Production"
-                            className="bg-gradient-to-r from-blue-500 to-teal-500"
-                        />
-                        <ProjectCard
-                            title="My Portfolio"
-                            description="A web application about me made with React, Tailwind CSS, Framer Motion, etc."
-                            url="https://anshportfolio-swart.vercel.app/"
-                            giturl="https://github.com/ansh9918/Portfolio"
-                        />
-                    </motion.div>
-                </motion.section>
-    </div>
-  )
-}
-
-function ProjectCard({ title, description, giturl, url}) {
     return (
-        <Card className="flex flex-col overflow-hidden border border-cyan-100 rounded-2xl p-4 hover:shadow-xl hover:shadow-cyan-700 transition-shadow duration-200 w-full max-w-sm md:max-w-sm lg:max-w-sm">
+        <div className="container mx-auto px-4 md:px-6 py-12">
+            <motion.section
+                ref={projectRef}
+                initial={{ opacity: 0, y: 50 }}
+                animate={projectControls}
+                transition={{ duration: 0.8 }}
+                variants={fadeUpVariants}
+                id="projects"
+                className="space-y-12">
+                {/* Header */}
+                <div className="space-y-4 text-center">
+                    <h2 className="text-3xl md:text-4xl font-bold">
+                        My Projects
+                    </h2>
+                    <p className="text-muted-foreground">
+                        Check out some of the projects I&apos;ve worked on.
+                    </p>
+                </div>
+
+                {/* Projects Grid */}
+                <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <ProjectCard
+                        title="Horizon"
+                        description="Horizon is a dynamic blog platform where users can explore, create, and share engaging content seamlessly."
+                        imgUrl="/assets/horizon.png"
+                        url="https://horizon-vert-theta.vercel.app/"
+                        giturl="https://github.com/ansh9918/Horizon"
+                    />
+                    <ProjectCard
+                        title="ChatterBox"
+                        imgUrl="/assets/chatterbox.png"
+                        url="https://chatter-box-snowy.vercel.app/"
+                        giturl="https://github.com/ansh9918/ChatterBox"
+                        description="Designing Chatterbox, a chat application enabling real-time messaging, voice/video calls, and login."
+                    />
+                    <ProjectCard
+                        title="My Portfolio"
+                        description="A web application about me made with React, Tailwind CSS, Framer Motion, etc."
+                        imgUrl="/assets/portfolio.png"
+                        url="https://anshportfolio-swart.vercel.app/"
+                        giturl="https://github.com/ansh9918/Portfolio"
+                    />
+                </motion.div>
+            </motion.section>
+        </div>
+    );
+};
+
+function ProjectCard({ title, description, giturl, url, imgUrl }) {
+    return (
+        <Card className="flex flex-col overflow-hidden border border-cyan-100 rounded-2xl p-4 hover:shadow-lg hover:shadow-cyan-700 transition-shadow duration-200 w-full">
             {/* Card Content */}
             <CardContent className="p-0 flex-grow">
-                <div className="w-full h-48 bg-gradient-to-r from-blue-500 to-teal-500"></div>
+                <img src={imgUrl} alt="" className="rounded-lg w-full" />
             </CardContent>
 
             {/* Card Footer */}
@@ -110,4 +116,4 @@ function ProjectCard({ title, description, giturl, url}) {
     );
 }
 
-export default Projects
+export default Projects;

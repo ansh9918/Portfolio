@@ -1,9 +1,9 @@
-import { motion} from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
-import fadeUpVariants from "../UI/Animations"
+import fadeUpVariants from "../UI/Animations";
 import { Button } from "../UI/Button";
 import { XIcon } from "@heroicons/react/outline";
-import containerVariants from "../UI/Animations"
+import containerVariants from "../UI/Animations";
 
 const Header = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,14 +14,15 @@ const Header = () => {
         }
         setIsMobileMenuOpen(false);
     };
-  return (
-    <div>
-      <motion.header variants={fadeUpVariants} className="fixed z-10 top-0 left-0 right-0 backdrop-blur-lg py-6 px-4 md:px-10 flex items-center justify-between border-b border-muted">
+    return (
+        <div>
+            <motion.header
+                variants={fadeUpVariants}
+                className="fixed z-10 top-0 left-0 right-0 backdrop-blur-lg py-6 px-4 md:px-10 flex items-center justify-between border-b border-muted">
                 <a
                     href=""
                     className="flex items-center gap-4 text-xl font-bold">
                     <CodeIcon className="w-6 h-6" />
-                    Ansh Maurya
                 </a>
                 <nav className="hidden md:flex items-center gap-4">
                     <button
@@ -86,9 +87,9 @@ const Header = () => {
                     </div>
                 </motion.div>
             </motion.header>
-    </div>
-  )
-}
+        </div>
+    );
+};
 
 function CodeIcon(props) {
     return (
@@ -129,4 +130,4 @@ function MenuIcon(props) {
     );
 }
 
-export default Header
+export default Header;
