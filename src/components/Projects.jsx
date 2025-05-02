@@ -48,7 +48,14 @@ const Projects = () => {
                 </div>
 
                 {/* Projects Grid */}
-                <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <ProjectCard
+                        title="DriveX"
+                        description="DriveX lets users upload, manage, and share files effortlessly — a blazing-fast Google Drive alternative built with cutting-edge web tech."
+                        imgUrl="/assets/drivex.png"
+                        url="https://drive-x-gjk4.vercel.app/"
+                        giturl="https://github.com/ansh9918/DriveX"
+                    />
                     <ProjectCard
                         title="Horizon"
                         description="Horizon is a dynamic blog platform where users can explore, create, and share engaging content seamlessly."
