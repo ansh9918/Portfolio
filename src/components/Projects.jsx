@@ -49,6 +49,13 @@ const Projects = () => {
 
                 {/* Projects Grid */}
                 <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                <ProjectCard
+                        title="Reddish"
+                        description="Developed a Reddit-style community platform with AI-powered content moderation, real-time authentication.Features include role-based access with Clerk, Sanity CMS, and a modern UI built with Tailwind CSS v4"
+                        imgUrl="/assets/reddish.png"
+                        url="https://reddish-seven.vercel.app/"
+                        giturl="https://github.com/ansh9918/Reddit-clone"
+                    />
                     <ProjectCard
                         title="DriveX"
                         description="DriveX lets users upload, manage, and share files effortlessly — a blazing-fast Google Drive alternative built with cutting-edge web tech."
