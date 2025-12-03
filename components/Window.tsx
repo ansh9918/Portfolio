@@ -1,16 +1,18 @@
+"use client";
+
 import { AppWindow } from "@/types";
 import React, { useEffect, useRef, useState } from "react";
-import Notes from "@/components/apps/notes";
-import Safari from "@/components/apps/safari";
+import Notes from "@/components/apps/Notes";
+import Safari from "@/components/apps/Safari";
 import YouTube from "@/components/apps/youtube";
-import Spotify from "@/components/apps/spotify";
-import Snake from "@/components/apps/snake";
+import Spotify from "@/components/apps/Spotify";
+import Snake from "@/components/apps/Snake";
 import Weather from "@/components/apps/weather";
 import GitHub from "./apps/GitHub";
 import FaceTime from "./apps/Facetime";
-import Terminal from "./apps/terminal";
 import MailApp from "./apps/MailApp";
 import { Minus, ArrowRightIcon as ArrowsMaximize, X } from "lucide-react";
+import Terminal from "./apps/Terminal";
 
 const componentMap: Record<
   string,
@@ -63,6 +65,7 @@ const Window = ({
   const windowRef = useRef<HTMLDivElement>(null);
 
   const AppComponent = componentMap[window.component];
+  //console.log(window);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -71,8 +74,11 @@ const Window = ({
           x: e.clientX - dragOffset.x,
           y: e.clientY - dragOffset.y,
         });
-      } else if (isResizing && resizeDirection) {
+      }
+
+      if (isResizing && resizeDirection) {
         e.preventDefault();
+
         const dx = e.clientX - resizeStartPos.x;
         const dy = e.clientY - resizeStartPos.y;
 
@@ -81,35 +87,39 @@ const Window = ({
         let newX = position.x;
         let newY = position.y;
 
-        // Minimum window dimensions
         const minWidth = 300;
         const minHeight = 200;
 
+        // EAST
         if (resizeDirection.includes("e")) {
           newWidth = Math.max(minWidth, resizeStartSize.width + dx);
         }
+
+        // SOUTH
         if (resizeDirection.includes("s")) {
           newHeight = Math.max(minHeight, resizeStartSize.height + dy);
         }
+
+        // WEST
         if (resizeDirection.includes("w")) {
           const proposedWidth = resizeStartSize.width - dx;
           if (proposedWidth >= minWidth) {
             newWidth = proposedWidth;
-            newX = position.x + dx;
+            newX = resizeStartPos.x + dx - dragOffset.x;
           }
         }
+
+        // NORTH (FIXED!)
         if (resizeDirection.includes("n")) {
           const proposedHeight = resizeStartSize.height - dy;
           if (proposedHeight >= minHeight) {
             newHeight = proposedHeight;
-            newY = position.y + dy;
+            newY = resizeStartPos.y + dy - dragOffset.y;
           }
         }
 
         setSize({ width: newWidth, height: newHeight });
-        if (resizeDirection.includes("w") || resizeDirection.includes("n")) {
-          setPosition({ x: newX, y: newY });
-        }
+        setPosition({ x: newX, y: newY });
       }
     };
 
@@ -183,12 +193,12 @@ const Window = ({
       setPreMaximizeState({ position, size });
 
       // Get the available space (accounting for menubar)
-      const availableHeight = window.size.height - 26; // 6px for menubar + 20px padding
+      const availableHeight = size.height - 26; // 6px for menubar + 20px padding
 
       // Maximize
       setPosition({ x: 0, y: 26 }); // Position below menubar
       setSize({
-        width: window.size.width,
+        width: size.width,
         height: availableHeight - 70, // Account for dock
       });
     }

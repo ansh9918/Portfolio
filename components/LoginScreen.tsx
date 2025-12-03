@@ -65,7 +65,7 @@ const LoginScreen = ({
 
       <div className="flex flex-col items-center">
         <div className="w-24 h-24 rounded-full bg-slate-800 flex items-center justify-center mb-4">
-          <span className="text-white text-5xl font-bold">D</span>
+          <span className="text-white text-5xl font-bold">A</span>
         </div>
         {/* <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-300 flex items-center justify-center mb-4">
           <Image

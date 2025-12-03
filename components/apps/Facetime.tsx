@@ -134,6 +134,8 @@ export default function FaceTime({ isDarkMode = true }: FaceTimeProps) {
                 <Image
                   src={photo || "/placeholder.svg"}
                   alt={`Captured photo ${index + 1}`}
+                  width={96}
+                  height={96}
                   className="h-24 w-auto rounded-sm"
                 />
                 <Button

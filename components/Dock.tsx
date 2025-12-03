@@ -14,8 +14,7 @@ const dockApps = [
     isSystem: true,
   },
   { id: "safari", title: "Safari", icon: "/safari.png", component: "Safari" },
-  { id: "mail", title: "Mail", icon: "/mail.png", component: "Mail" },
-  { id: "vscode", title: "VS Code", icon: "/vscode.png", component: "VSCode" },
+  { id: "mail", title: "Mail", icon: "/mail.png", component: "MailApp" },
   { id: "notes", title: "Notes", icon: "/notes.png", component: "Notes" },
   {
     id: "facetime",
@@ -135,8 +134,8 @@ const Dock = ({
     const distance = Math.abs(mouseX - iconPosition);
 
     // Maximum scale and distance influence
-    const maxScale = 2;
-    const maxDistance = iconWidth * 2.5;
+    const maxScale = 1.5;
+    const maxDistance = iconWidth * 2;
 
     // Calculate scale based on distance (closer = larger)
     if (distance > maxDistance) return 1;
@@ -171,6 +170,8 @@ const Dock = ({
                   <Image
                     src={app.icon || "/placeholder.svg"}
                     alt={app.title}
+                    width={48}
+                    height={48}
                     className="w-12 h-12 object-contain"
                     draggable="false"
                   />
@@ -223,6 +224,8 @@ const Dock = ({
                 <Image
                   src={app.icon || "/placeholder.svg"}
                   alt={app.title}
+                  width={52}
+                  height={52}
                   className={`object-contain ${isMobile ? "w-14 h-14" : "w-12 h-12"}`}
                   draggable="false"
                 />

@@ -20,99 +20,24 @@ interface WeatherProps {
   isDarkMode?: boolean;
 }
 
-// Mock weather data for different cities
-const weatherData = {
-  "New York": {
-    current: {
-      temp: 18,
-      condition: "Partly Cloudy",
-      humidity: 65,
-      windSpeed: 12,
-      sunrise: "6:15 AM",
-      sunset: "7:45 PM",
-      feelsLike: 17,
-    },
-    forecast: [
-      { day: "Mon", temp: 19, condition: "sunny" },
-      { day: "Tue", temp: 21, condition: "partly-cloudy" },
-      { day: "Wed", temp: 17, condition: "rainy" },
-      { day: "Thu", temp: 15, condition: "rainy" },
-      { day: "Fri", temp: 14, condition: "snowy" },
-    ],
-  },
-  London: {
-    current: {
-      temp: 14,
-      condition: "Rainy",
-      humidity: 80,
-      windSpeed: 18,
-      sunrise: "5:45 AM",
-      sunset: "8:30 PM",
-      feelsLike: 12,
-    },
-    forecast: [
-      { day: "Mon", temp: 13, condition: "rainy" },
-      { day: "Tue", temp: 14, condition: "rainy" },
-      { day: "Wed", temp: 15, condition: "partly-cloudy" },
-      { day: "Thu", temp: 16, condition: "partly-cloudy" },
-      { day: "Fri", temp: 14, condition: "rainy" },
-    ],
-  },
-  Tokyo: {
-    current: {
-      temp: 24,
-      condition: "Sunny",
-      humidity: 50,
-      windSpeed: 8,
-      sunrise: "4:30 AM",
-      sunset: "6:45 PM",
-      feelsLike: 25,
-    },
-    forecast: [
-      { day: "Mon", temp: 25, condition: "sunny" },
-      { day: "Tue", temp: 26, condition: "sunny" },
-      { day: "Wed", temp: 24, condition: "partly-cloudy" },
-      { day: "Thu", temp: 23, condition: "partly-cloudy" },
-      { day: "Fri", temp: 25, condition: "sunny" },
-    ],
-  },
-  Sydney: {
-    current: {
-      temp: 22,
-      condition: "Sunny",
-      humidity: 55,
-      windSpeed: 15,
-      sunrise: "6:30 AM",
-      sunset: "5:15 PM",
-      feelsLike: 23,
-    },
-    forecast: [
-      { day: "Mon", temp: 23, condition: "sunny" },
-      { day: "Tue", temp: 25, condition: "sunny" },
-      { day: "Wed", temp: 21, condition: "partly-cloudy" },
-      { day: "Thu", temp: 19, condition: "rainy" },
-      { day: "Fri", temp: 20, condition: "partly-cloudy" },
-    ],
-  },
-  Paris: {
-    current: {
-      temp: 16,
-      condition: "Partly Cloudy",
-      humidity: 60,
-      windSpeed: 10,
-      sunrise: "6:00 AM",
-      sunset: "8:15 PM",
-      feelsLike: 15,
-    },
-    forecast: [
-      { day: "Mon", temp: 17, condition: "partly-cloudy" },
-      { day: "Tue", temp: 18, condition: "partly-cloudy" },
-      { day: "Wed", temp: 16, condition: "rainy" },
-      { day: "Thu", temp: 15, condition: "rainy" },
-      { day: "Fri", temp: 17, condition: "partly-cloudy" },
-    ],
-  },
-};
+interface ForecastItem {
+  day: string;
+  temp: number;
+  condition: string;
+}
+
+interface WeatherData {
+  current: {
+    temp: number;
+    condition: string;
+    humidity: number;
+    windSpeed: number;
+    sunrise: string;
+    sunset: string;
+    feelsLike: number;
+  };
+  forecast: ForecastItem[];
+}
 
 type WeatherCondition =
   | "sunny"
@@ -131,13 +56,13 @@ interface Particle {
   color: string;
 }
 
-type City = keyof typeof weatherData;
-
 export default function Weather({ isDarkMode = true }: WeatherProps) {
-  const [city, setCity] = useState<City>("New York");
+  const [city, setCity] = useState("New York");
   const [searchQuery, setSearchQuery] = useState("");
-  const [weather, setWeather] = useState(weatherData["New York"]);
+  const [weather, setWeather] = useState<WeatherData | null>(null);
   const [condition, setCondition] = useState<WeatherCondition>("partly-cloudy");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
   const animationRef = useRef<number | null>(null);
@@ -287,6 +212,72 @@ export default function Weather({ isDarkMode = true }: WeatherProps) {
     }
   };
 
+  const fetchWeather = async (cityName: string) => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
+
+      // Current weather (temp, humidity, feelslike etc.)
+      const res1 = await fetch(
+        `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${cityName}&aqi=no`,
+      );
+      if (!res1.ok) throw new Error("City not found");
+      const data1 = await res1.json();
+
+      // Forecast (sunrise, sunset, 5-day)
+      const res2 = await fetch(
+        `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${cityName}&days=5&aqi=no&alerts=no`,
+      );
+      const data2 = await res2.json();
+
+      // Map forecast
+      const forecastMap: ForecastItem[] = data2.forecast.forecastday.map(
+        (d: any) => ({
+          day: new Date(d.date).toLocaleDateString("en-US", {
+            weekday: "short",
+          }),
+          temp: Math.round(d.day.avgtemp_c),
+          condition: d.day.condition.text.toLowerCase(),
+        }),
+      );
+
+      // Map current weather
+      const mapped: WeatherData = {
+        current: {
+          temp: Math.round(data1.current.temp_c),
+          condition: data1.current.condition.text,
+          humidity: data1.current.humidity,
+          windSpeed: data1.current.wind_kph,
+          sunrise: data2.forecast.forecastday[0].astro.sunrise,
+          sunset: data2.forecast.forecastday[0].astro.sunset,
+          feelsLike: Math.round(data1.current.feelslike_c),
+        },
+        forecast: forecastMap,
+      };
+
+      setWeather(mapped);
+
+      // Set weather condition
+      const c = mapped.current.condition.toLowerCase();
+      if (c.includes("rain")) setCondition("rainy");
+      else if (c.includes("snow")) setCondition("snowy");
+      else if (c.includes("cloud")) setCondition("partly-cloudy");
+      else if (c.includes("sun") || c.includes("clear")) setCondition("sunny");
+      else setCondition("cloudy");
+    } catch (err: any) {
+      setError(err.message || "Unable to load weather");
+    } finally {
+      setLoading(false);
+      initParticles();
+    }
+  };
+
+  useEffect(() => {
+    fetchWeather(city);
+  }, [city]);
+
   // Initialize particles and animation
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -334,65 +325,33 @@ export default function Weather({ isDarkMode = true }: WeatherProps) {
     };
   }, [condition]);
 
-  // Update weather condition when city changes
-  useEffect(() => {
-    if (!weatherData[city]) return;
-
-    // Defer setState to avoid React warning
-    queueMicrotask(() => {
-      const data = weatherData[city];
-      setWeather(data);
-
-      const conditionLower = data.current.condition.toLowerCase();
-
-      if (conditionLower.includes("rain")) setCondition("rainy");
-      else if (conditionLower.includes("snow")) setCondition("snowy");
-      else if (conditionLower.includes("cloud")) setCondition("partly-cloudy");
-      else if (conditionLower.includes("sun")) setCondition("sunny");
-      else setCondition("partly-cloudy");
-
-      initParticles();
-    });
-  }, [city]);
-
   const handleSearch = () => {
-    const query = searchQuery.trim();
-
-    if (query) {
-      const foundCity = (Object.keys(weatherData) as City[]).find((c) =>
-        c.toLowerCase().includes(query.toLowerCase()),
-      );
-
-      if (foundCity) {
-        setCity(foundCity); // ✅ No error
-      }
+    if (searchQuery.trim()) {
+      setCity(searchQuery.trim());
     }
-
     setSearchQuery("");
   };
 
   const getWeatherIcon = (condition: string) => {
-    if (condition.includes("sunny")) return <Sun className="w-6 h-6" />;
-    if (condition.includes("partly-cloudy"))
-      return <Cloud className="w-6 h-6" />;
-    if (condition.includes("rainy")) return <CloudRain className="w-6 h-6" />;
-    if (condition.includes("snowy")) return <CloudSnow className="w-6 h-6" />;
+    const c = condition.toLowerCase();
+    if (c.includes("sunny")) return <Sun className="w-6 h-6" />;
+    if (c.includes("partly-cloudy")) return <Cloud className="w-6 h-6" />;
+    if (c.includes("rainy")) return <CloudRain className="w-6 h-6" />;
+    if (c.includes("snowy")) return <CloudSnow className="w-6 h-6" />;
     return <Cloud className="w-6 h-6" />;
   };
 
   return (
     <div
-      className={`h-full ${bgColor} ${textColor} flex flex-col relative overflow-hidden`}>
-      {/* Canvas for weather effects */}
+      className={`h-full ${bgColor} ${textColor} flex flex-col relative px-3 sm:px-5 py-2`}>
       <canvas
         ref={canvasRef}
         className="absolute inset-0 pointer-events-none z-0"
       />
 
-      {/* Content */}
       <div className="relative z-10 flex flex-col h-full">
         {/* Search bar */}
-        <div className="p-4 flex items-center space-x-2">
+        <div className="p-3 sm:p-4 flex items-center gap-2 w-full">
           <div className="relative flex-1">
             <Input
               type="text"
@@ -400,10 +359,11 @@ export default function Weather({ isDarkMode = true }: WeatherProps) {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className={`pl-10 ${isDarkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
+              className={`pl-10 w-full ${isDarkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"}`}
             />
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           </div>
+
           <Button
             onClick={handleSearch}
             variant={isDarkMode ? "outline" : "default"}
@@ -412,91 +372,58 @@ export default function Weather({ isDarkMode = true }: WeatherProps) {
           </Button>
         </div>
 
-        {/* Current weather */}
-        <div className="px-6 py-4 flex flex-col md:flex-row items-center justify-between">
-          <div className="flex flex-col items-center md:items-start mb-4 md:mb-0">
-            <div className="flex items-center">
-              <MapPin className="w-5 h-5 mr-2 text-blue-500" />
-              <h2 className="text-2xl font-bold">{city}</h2>
-            </div>
-            <p className="text-gray-500 text-sm mt-1">Today</p>
+        {loading && <p className="mt-4 text-gray-400">Loading weather...</p>}
+        {error && <p className="mt-4 text-red-400">{error}</p>}
 
-            <div className="flex items-center mt-4">
-              <div className="text-6xl font-light mr-4">
-                {weather.current.temp}°
-              </div>
-              <div>
-                <p className="text-lg">{weather.current.condition}</p>
-                <p className="text-sm text-gray-500">
-                  Feels like {weather.current.feelsLike}°
-                </p>
-              </div>
+        {!loading && weather && (
+          <>
+            <div className="mt-3 flex items-center gap-4 sm:gap-6 flex-wrap">
+              <MapPin className="text-blue-500" />
+              <h1 className="text-3xl font-bold">{city}</h1>
             </div>
-          </div>
 
-          <div
-            className={`${cardBg} p-4 rounded-lg border ${borderColor} grid grid-cols-2 gap-4 w-full md:w-auto`}>
-            <div className="flex items-center">
-              <Droplets className="w-5 h-5 mr-2 text-blue-500" />
-              <div>
-                <p className="text-sm text-gray-500">Humidity</p>
-                <p className="font-medium">{weather.current.humidity}%</p>
-              </div>
+            <div className="mt-4 text-5xl sm:text-6xl font-light">
+              {weather.current.temp}°
             </div>
-            <div className="flex items-center">
-              <Wind className="w-5 h-5 mr-2 text-blue-500" />
-              <div>
-                <p className="text-sm text-gray-500">Wind</p>
-                <p className="font-medium">{weather.current.windSpeed} km/h</p>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <Sunrise className="w-5 h-5 mr-2 text-orange-500" />
-              <div>
-                <p className="text-sm text-gray-500">Sunrise</p>
-                <p className="font-medium">{weather.current.sunrise}</p>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <Sunset className="w-5 h-5 mr-2 text-orange-500" />
-              <div>
-                <p className="text-sm text-gray-500">Sunset</p>
-                <p className="font-medium">{weather.current.sunset}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+            <p className="text-lg">{weather.current.condition}</p>
+            <p className="text-gray-400">
+              Feels like {weather.current.feelsLike}°
+            </p>
 
-        {/* Forecast */}
-        <div className="px-6 mt-4">
-          <h3 className="text-lg font-medium mb-3">5-Day Forecast</h3>
-          <div
-            className={`grid grid-cols-5 gap-2 ${cardBg} rounded-lg border ${borderColor} p-4`}>
-            {weather.forecast.map((day, index) => (
-              <div key={index} className="flex flex-col items-center">
-                <p className="font-medium">{day.day}</p>
-                <div className="my-2">{getWeatherIcon(day.condition)}</div>
-                <p className="text-lg font-medium">{day.temp}°</p>
+            <div
+              className={`${cardBg} p-3 sm:p-4 mt-6 rounded-lg border ${borderColor} grid grid-cols-1 sm:grid-cols-2 gap-4`}>
+              <div className="flex items-center gap-2">
+                <Droplets />
+                <span>Humidity: {weather.current.humidity}%</span>
               </div>
-            ))}
-          </div>
-        </div>
+              <div className="flex items-center gap-2">
+                <Wind />
+                <span>Wind: {weather.current.windSpeed} km/h</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Sunrise />
+                <span>Sunrise: {weather.current.sunrise}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Sunset />
+                <span>Sunset: {weather.current.sunset}</span>
+              </div>
+            </div>
 
-        {/* City selector */}
-        <div className="px-6 mt-6">
-          <h3 className="text-lg font-medium mb-3">Popular Cities</h3>
-          <div className="flex flex-wrap gap-2">
-            {(Object.keys(weatherData) as City[]).map((cityName) => (
-              <Button
-                key={cityName}
-                variant={city === cityName ? "default" : "outline"}
-                className={`${city === cityName ? "" : isDarkMode ? "border-gray-700" : "border-gray-300"}`}
-                onClick={() => setCity(cityName)}>
-                {cityName}
-              </Button>
-            ))}
-          </div>
-        </div>
+            {/* Forecast */}
+            <h3 className="mt-6 text-xl font-semibold">5-Day Forecast</h3>
+            <div
+              className={`${cardBg} border ${borderColor} p-3 sm:p-4 rounded-lg mt-3 grid grid-cols-3 sm:grid-cols-5 gap-4`}>
+              {weather.forecast.map((f, i) => (
+                <div key={i} className="flex flex-col items-center text-center">
+                  <p>{f.day}</p>
+                  <span className="my-2">{getWeatherIcon(f.condition)}</span>
+                  <p className="text-lg">{f.temp}°</p>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

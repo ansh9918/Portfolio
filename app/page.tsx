@@ -1,8 +1,10 @@
+"use client";
+
 import BootScreen from "@/components/BootScreen";
 import Desktop from "@/components/Desktop";
 import LoginScreen from "@/components/LoginScreen";
 import ShutdownScreen from "@/components/ShutdownScreen";
-import SleepScreen from "@/components/Sleepscreen";
+import SleepScreen from "@/components/SleepScreen";
 import { useEffect, useState } from "react";
 
 type SystemState =

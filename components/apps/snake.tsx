@@ -220,6 +220,7 @@ export default function Snake({ isDarkMode = true }: SnakeProps) {
   // Handle keyboard input
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      e.preventDefault();
       if (gameOver) return;
 
       switch (e.key) {

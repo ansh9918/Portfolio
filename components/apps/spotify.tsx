@@ -231,7 +231,13 @@ export default function Spotify({ isDarkMode = true }: SpotifyProps) {
       {/* Header */}
       <div className={`${secondaryBg} p-4 flex items-center justify-between`}>
         <div className="flex items-center">
-          <Image src="/spotify.png" alt="Spotify" className="w-8 h-8 mr-3" />
+          <Image
+            src="/spotify.png"
+            alt="Spotify"
+            width={32}
+            height={32}
+            className="w-8 h-8 mr-3"
+          />
           <h2 className="font-semibold">Spotify</h2>
         </div>
         <div className="flex space-x-2">
@@ -250,6 +256,8 @@ export default function Spotify({ isDarkMode = true }: SpotifyProps) {
           <Image
             src={currentTrack.cover || "/placeholder.svg"}
             alt={`${currentTrack.title} cover`}
+            width={192}
+            height={192}
             className="w-full h-full object-cover"
           />
         </div>
@@ -356,6 +364,8 @@ export default function Spotify({ isDarkMode = true }: SpotifyProps) {
                 <Image
                   src={track.cover || "/placeholder.svg"}
                   alt={track.title}
+                  width={40}
+                  height={40}
                   className="w-full h-full object-cover"
                 />
               </div>

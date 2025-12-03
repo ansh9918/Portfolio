@@ -30,6 +30,8 @@ export default function GitHub({ isDarkMode = true }: GitHubProps) {
         <Image
           src="/github.svg"
           alt="github logo"
+          width={64}
+          height={64}
           className="w-16 h-16 mx-auto mb-4"
         />
         <h2 className="text-xl font-semibold mb-2">Opening GitHub...</h2>

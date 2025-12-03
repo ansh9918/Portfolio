@@ -225,6 +225,8 @@ export default function Safari({ isDarkMode = true }: SafariProps) {
                       <Image
                         src={link.icon || "/placeholder.svg"}
                         alt={link.title}
+                        width={32}
+                        height={32}
                         className="w-8 h-8 object-contain"
                       />
                     </div>
@@ -245,6 +247,8 @@ export default function Safari({ isDarkMode = true }: SafariProps) {
                       <Image
                         src={site.icon || "/placeholder.svg"}
                         alt={site.title}
+                        width={32}
+                        height={32}
                         className="w-8 h-8 object-contain"
                       />
                     </div>

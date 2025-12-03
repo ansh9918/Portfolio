@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 const spotlightApps = [
   { id: "safari", title: "Safari", icon: "/safari.png", component: "Safari" },
-  { id: "mail", title: "Mail", icon: "/mail.png", component: "Mail" },
+  { id: "mail", title: "Mail", icon: "/mail.png", component: "MailApp" },
   { id: "notes", title: "Notes", icon: "/notes.png", component: "Notes" },
   {
     id: "facetime",
@@ -145,6 +145,8 @@ const Spotlight = ({ onClose, onAppClick }: SpotlightProps) => {
                   <Image
                     src={app.icon || "/placeholder.svg"}
                     alt={app.title}
+                    width={24}
+                    height={24}
                     className="w-6 h-6 object-contain"
                   />
                 </div>

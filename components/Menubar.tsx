@@ -170,7 +170,7 @@ const Menubar = ({
             <button
               className={`w-full text-left px-4 py-1 ${hoverClass}`}
               onClick={onLogout}>
-              Log Out Daniel...
+              Log Out Ansh...
             </button>
           </div>
         )}
@@ -262,6 +262,8 @@ const Menubar = ({
           <Image
             src="/control-center-icon.webp"
             alt="Control Center"
+            width={24}
+            height={24}
             className="w-4 h-4"
             style={{
               filter: isDarkMode ? "invert(1)" : "none",

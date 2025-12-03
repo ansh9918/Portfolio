@@ -33,6 +33,8 @@ export default function YouTube({ isDarkMode = true }: YouTubeProps) {
         <Image
           src="/youtube.png"
           alt="YouTube"
+          width={64}
+          height={64}
           className="w-16 h-16 mx-auto mb-4 object-contain"
         />
         <h2 className="text-xl font-semibold mb-2">Opening YouTube...</h2>

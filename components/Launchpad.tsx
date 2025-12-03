@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 const launchpadApps = [
   { id: "safari", title: "Safari", icon: "/safari.png", component: "Safari" },
-  { id: "mail", title: "Mail", icon: "/mail.png", component: "Mail" },
+  { id: "mail", title: "Mail", icon: "/mail.png", component: "MailApp" },
   { id: "notes", title: "Notes", icon: "/notes.png", component: "Notes" },
   {
     id: "facetime",
@@ -123,6 +123,8 @@ const Launchpad = ({ onAppClick, onClose }: LaunchpadProps) => {
                 <Image
                   src={app.icon || "/placeholder.svg"}
                   alt={app.title}
+                  width={48}
+                  height={48}
                   className="w-12 h-12 object-contain"
                 />
               </div>
