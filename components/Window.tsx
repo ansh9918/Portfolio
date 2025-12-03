@@ -8,11 +8,11 @@ import YouTube from "@/components/apps/youtube";
 import Spotify from "@/components/apps/Spotify";
 import Snake from "@/components/apps/Snake";
 import Weather from "@/components/apps/weather";
-import GitHub from "./apps/GitHub";
-import FaceTime from "./apps/Facetime";
-import MailApp from "./apps/MailApp";
+import GitHub from "@/components/apps/GitHub";
+import FaceTime from "@/components/apps/Facetime";
+import MailApp from "@/components/apps/MailApp";
 import { Minus, ArrowRightIcon as ArrowsMaximize, X } from "lucide-react";
-import Terminal from "./apps/Terminal";
+import Terminal from "@/components/apps/Terminal";
 
 const componentMap: Record<
   string,
