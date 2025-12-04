@@ -221,14 +221,14 @@ export default function Weather({ isDarkMode = true }: WeatherProps) {
 
       // Current weather (temp, humidity, feelslike etc.)
       const res1 = await fetch(
-        `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${cityName}&aqi=no`,
+        `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${cityName}&aqi=no`,
       );
       if (!res1.ok) throw new Error("City not found");
       const data1 = await res1.json();
 
       // Forecast (sunrise, sunset, 5-day)
       const res2 = await fetch(
-        `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${cityName}&days=5&aqi=no&alerts=no`,
+        `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${cityName}&days=5&aqi=no&alerts=no`,
       );
       const data2 = await res2.json();
 
