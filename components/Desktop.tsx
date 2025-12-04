@@ -11,6 +11,7 @@ import Launchpad from "./Launchpad";
 import ControlCenter from "./ControlCenter";
 import Spotlight from "./Spotlight";
 import Dock from "./Dock";
+import Welcome from "./Welcome";
 
 interface DesktopProps {
   onLogout: () => void;
@@ -22,6 +23,7 @@ interface DesktopProps {
   initialBrightness: number;
   onBrightnessChange: (value: number) => void;
 }
+
 const Desktop = ({
   onLogout,
   onSleep,
@@ -153,6 +155,7 @@ const Desktop = ({
               : null
           }
         />
+        <Welcome />
 
         {/* Windows */}
         <div className="absolute inset-0 pt-6 pb-16">

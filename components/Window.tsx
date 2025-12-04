@@ -225,7 +225,7 @@ const Window = ({
   return (
     <div
       ref={windowRef}
-      className={`absolute rounded-lg overflow-hidden shadow-2xl transition-shadow ${isActive ? "shadow-2xl z-10" : "shadow-lg z-0"}`}
+      className={`absolute rounded-lg overflow-hidden shadow-2xl transition-shadow ${isActive ? "shadow-2xl z-50" : "shadow-lg z-0"}`}
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
