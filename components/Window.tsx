@@ -13,6 +13,7 @@ import FaceTime from "@/components/apps/Facetime";
 import MailApp from "@/components/apps/MailApp";
 import { Minus, ArrowRightIcon as ArrowsMaximize, X } from "lucide-react";
 import Terminal from "@/components/apps/Terminal";
+import ResumeViewer from "./apps/Resume";
 
 const componentMap: Record<
   string,
@@ -28,6 +29,7 @@ const componentMap: Record<
   Spotify,
   Snake,
   Weather,
+  ResumeViewer,
 };
 
 interface WindowProps {

@@ -36,10 +36,10 @@ const dockApps = [
     component: "YouTube",
   },
   {
-    id: "spotify",
-    title: "Spotify",
-    icon: "/spotify.png",
-    component: "Spotify",
+    id: "resume",
+    title: "Resume",
+    icon: "/pdf.png",
+    component: "ResumeViewer",
   },
 ];
 

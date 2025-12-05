@@ -38,6 +38,12 @@ const spotlightApps = [
     icon: "/weather.png",
     component: "Weather",
   },
+  {
+    id: "resume",
+    title: "Resume",
+    icon: "/pdf.png",
+    component: "ResumeViewer",
+  },
 ];
 
 interface SpotlightProps {
