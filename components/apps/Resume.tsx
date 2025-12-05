@@ -1,13 +1,10 @@
 "use client";
-import { Button } from "../ui/button";
-import { Document, Page, pdfjs } from "react-pdf";
 
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import "react-pdf/dist/Page/TextLayer.css";
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url,
-).toString();
+import dynamic from "next/dynamic";
+
+const PdfViewer = dynamic(() => import("./PdfViewer"), {
+  ssr: false,
+});
 
 interface ResumeViewerProps {
   isDarkMode?: boolean;
@@ -36,14 +33,7 @@ export default function ResumeViewer({ isDarkMode = true }: ResumeViewerProps) {
       </div>
 
       <div className="w-full h-full overflow-auto flex justify-center">
-        <Document file="/resume/Ansh-Resume.pdf">
-          <Page
-            pageNumber={1}
-            renderAnnotationLayer
-            renderTextLayer
-            scale={1.2}
-          />
-        </Document>
+        <PdfViewer />
       </div>
     </div>
   );
